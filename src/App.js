@@ -55,10 +55,10 @@ function App() {
             investments[plan.id] = {
               totalInvesti: storedPlans
                 .filter((p) => p.nom === plan.nom)
-                .reduce((acc, curr) => acc + parseFloat(curr.montant), 0) * bnbToUsdtRate,
+                .reduce((acc, curr) => acc + parseFloat(curr.montant), 0),
               rendement: storedPlans
                 .filter((p) => p.nom === plan.nom)
-                .reduce((acc, curr) => acc + curr.montant * (plan.taux / 100), 0) * bnbToUsdtRate,
+                .reduce((acc, curr) => acc + curr.montant * (plan.taux / 100), 0),
             };
           });
           setPlanInvestissements(investments);
@@ -101,7 +101,6 @@ function App() {
         setPlans(updatedPlans);
         localStorage.setItem("historiquePlans", JSON.stringify(updatedPlans));
 
-        // Mettre à jour les investissements par plan
         setPlanInvestissements((prevInvestments) => ({
           ...prevInvestments,
           [plan.id]: {
@@ -149,8 +148,8 @@ function App() {
             <h3>{plan.nom}</h3>
             <p>Durée : {plan.duree} jours</p>
             <p>Taux : {plan.taux}%</p>
-            <p>Montant total investi : {planInvestissements[plan.id]?.totalInvesti.toFixed(2) || 0} USDT</p>
-            <p>Rendement généré : {planInvestissements[plan.id]?.rendement.toFixed(2) || 0} USDT</p>
+            <p>Montant total investi : {(planInvestissements[plan.id]?.totalInvesti || 0).toFixed(2)} USDT</p>
+            <p>Rendement généré : {(planInvestissements[plan.id]?.rendement || 0).toFixed(2)} USDT</p>
             <div style={{ textAlign: "center", marginBottom: "10px" }}>
               <input
                 type="text"
