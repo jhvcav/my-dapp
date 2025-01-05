@@ -16,9 +16,422 @@ function App() {
   const contractAddress = "0xCB224BDd5125E04E8E5EbbC97ba1d900e6CA8d3c";
 
   const contractABI = [
-    { inputs: [], name: "deposer", outputs: [], stateMutability: "payable", type: "function" },
-    { inputs: [{ internalType: "address", name: "utilisateur", type: "address" }], name: "obtenirDepot", outputs: [{ internalType: "uint256", name: "", type: "uint256" }], stateMutability: "view", type: "function" },
-    { inputs: [], name: "getBalance", outputs: [{ internalType: "uint256", name: "", type: "uint256" }], stateMutability: "view", type: "function" },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tauxRendement",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_dureeBlocage",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "utilisateur",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "montant",
+          "type": "uint256"
+        }
+      ],
+      "name": "DepotEffectue",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "montant",
+          "type": "uint256"
+        }
+      ],
+      "name": "FondsRetiresParProprietaire",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "utilisateur",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "montant",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "debut",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "fin",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "taux",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "reinvestissementAutomatique",
+          "type": "bool"
+        }
+      ],
+      "name": "PlanAjoute",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "utilisateur",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "montant",
+          "type": "uint256"
+        }
+      ],
+      "name": "RendementsRetires",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "utilisateur",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "montant",
+          "type": "uint256"
+        }
+      ],
+      "name": "RetraitEffectue",
+      "type": "event"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "fallback"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "montant",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "taux",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "duree",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "reinvestissementAutomatique",
+          "type": "bool"
+        }
+      ],
+      "name": "ajouterPlan",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "deposer",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "nouvelleDuree",
+          "type": "uint256"
+        }
+      ],
+      "name": "mettreAJourDureeBlocage",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "nouveauTaux",
+          "type": "uint256"
+        }
+      ],
+      "name": "mettreAJourTauxRendement",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "utilisateur",
+          "type": "address"
+        }
+      ],
+      "name": "obtenirDepot",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "obtenirDureeBlocage",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "utilisateur",
+          "type": "address"
+        }
+      ],
+      "name": "obtenirPlansUtilisateur",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "montant",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "debut",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "fin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "taux",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "reinvestissementAutomatique",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct Rendement.Plan[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "utilisateur",
+          "type": "address"
+        }
+      ],
+      "name": "obtenirRendement",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "obtenirTauxRendement",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "retirer",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "retirerRendements",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "retirerTout",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
   ];
 
   const plansDisponibles = [
@@ -120,8 +533,22 @@ function App() {
     }
   };
 
-  const retirerRendement = (plan) => {
-    alert(`Rendement retiré pour ${plan.nom}`);
+  const retirerRendement = async (plan) => {
+    if (contract && signer) {
+      try {
+        setLoading(true);
+        const tx = await contract.retirerRendements(); // Appel à la fonction retirerRendements
+        await tx.wait();
+        alert(`Rendement retiré avec succès pour le plan : ${plan.nom}`);
+      } catch (error) {
+        console.error("Erreur lors du retrait des rendements :", error);
+        alert("Erreur lors du retrait des rendements !");
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      alert("Le contrat ou le portefeuille n'est pas connecté !");
+    }
   };
 
   const retirerCapital = (plan) => {
