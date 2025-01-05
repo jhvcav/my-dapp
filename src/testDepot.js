@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 
 console.log("testDepot.js est chargé");
 
-const contractAddress = "0x387c5F429A38b2422e8B05564B1fdf05C96B3A67";
+const contractAddress = "0xCB224BDd5125E04E8E5EbbC97ba1d900e6CA8d3c";
 const contractABI = [
   {
     inputs: [{ internalType: "address", name: "utilisateur", type: "address" }],

@@ -2,7 +2,7 @@
   "name": "my-dapp",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/jhvcav/my-dapp",
+  "homepage": "https://jhvcav.github.io/my-dapp",
   "dependencies": {
     "@ethersproject/abstract-signer": "^5.7.0",
     "@ethersproject/contracts": "^5.7.0",

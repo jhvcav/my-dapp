@@ -7,13 +7,13 @@ function App() {
   const [account, setAccount] = useState(null);
   const [balance, setBalance] = useState(0);
   const [plans, setPlans] = useState([]); // Historique des plans
-  const [montant, setMontant] = useState("");
+  const [montants, setMontants] = useState({}); // Montants pour chaque plan
   const [loading, setLoading] = useState(false);
   const [planInvestissements, setPlanInvestissements] = useState({});
   const [reinvestissementAutomatique, setReinvestissementAutomatique] = useState(false);
   const [bnbToUsdtRate, setBnbToUsdtRate] = useState(300); // Exemple: 1 BNB = 300 USDT (taux fictif)
 
-  const contractAddress = "0x387c5F429A38b2422e8B05564B1fdf05C96B3A67";
+  const contractAddress = "0xCB224BDd5125E04E8E5EbbC97ba1d900e6CA8d3c";
 
   const contractABI = [
     { inputs: [], name: "deposer", outputs: [], stateMutability: "payable", type: "function" },
@@ -74,6 +74,7 @@ function App() {
   }, [bnbToUsdtRate]);
 
   const handleInvest = async (plan) => {
+    const montant = montants[plan.id] || "";
     if (!montant || isNaN(parseFloat(montant)) || parseFloat(montant) <= 0) {
       alert("Veuillez entrer un montant valide !");
       return;
@@ -109,7 +110,7 @@ function App() {
           },
         }));
 
-        setMontant("");
+        setMontants((prevMontants) => ({ ...prevMontants, [plan.id]: "" }));
       } catch (error) {
         alert("Erreur lors de l'investissement !");
         console.error("Erreur lors de l'investissement :", error);
@@ -154,8 +155,8 @@ function App() {
               <input
                 type="text"
                 placeholder="Montant à investir (USDT)"
-                value={montant}
-                onChange={(e) => setMontant(e.target.value)}
+                value={montants[plan.id] || ""}
+                onChange={(e) => setMontants((prev) => ({ ...prev, [plan.id]: e.target.value }))}
                 style={{ padding: "10px", width: "80%" }}
               />
             </div>
